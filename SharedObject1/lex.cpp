@@ -697,15 +697,18 @@ char instala(char x)
 
 {
 	int xx;
+	int yy;
+	yy = 0;
    unsigned int i;
    xx = (int) x;
    strcpy (constantes[xx],  yytext);
    i=0;
-   while ( i < (strlen(yytext-2) ) ) { 
+   yy = strlen(yytext)-2;
+   while ( i < (yy) )  { 
        constantes[xx][i] = constantes[xx][i+1]; i++;
     }
    if (i > 3)
-	   constantes[xx][i - 4] = '\0';
+	   constantes[xx][i] = '\0';
    else
 	   fprintf(stderr, "error en instala\n");
     fprintf(stderr, "%d  --    %s\n", x, constantes[x]);  

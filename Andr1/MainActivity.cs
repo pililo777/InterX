@@ -44,7 +44,19 @@ namespace Andr1
  
             int n = Cpp_GetValue();
             EditText edit1 = FindViewById<EditText>(Resource.Id.editText1);
-            edit1.Text = System.IO.File.ReadAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt");
+            try
+            {
+                //edit1.Text = System.IO.File.ReadAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt");
+                edit1.Text = System.IO.File.ReadAllText("/data/data/Andr1.Andr1/files/test.txt");
+            }
+
+            catch (Exception ee)
+            {
+                Console.WriteLine(ee.Message);
+
+            }
+
+           
 
         }
 

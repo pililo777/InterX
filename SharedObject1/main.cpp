@@ -208,8 +208,8 @@ clase1::~clase1()
 int clase1::main ()
 {
     int i;
- static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/p1.pr";
- 
+ //static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/p1.pr";
+ static const	char *  myFileName = "/data/data/Andr1.Andr1/files/p1.pr";
 
  
 
@@ -300,7 +300,8 @@ double clase1::run()   // antes el parametro era una string   String *s
 				char test[80];
 
 				 
-			static const	char *  myFileName  = "/sdcard/data/data/Andr1.Andr1/files/test.txt";
+//			static const	char *  myFileName  = "/sdcard/data/data/Andr1.Andr1/files/test.txt";
+			static const	char *  myFileName = "/data/data/Andr1.Andr1/files/test.txt";
 			static const char *mensaje = "por lo menos esto va bien";
 				 
 				fprintf(stderr, "\n\n   RUNNING.....\n\n");

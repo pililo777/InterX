@@ -8,6 +8,30 @@
 #include <android/log.h>
 #include "android/native_activity.h"
 
+
+
+ typedef  struct  UnmanagedStruct  {
+public:
+ 
+
+	  int Tipo;
+	  double Numero;
+ 
+	  int Subnodos;
+
+
+	  UnmanagedStruct *  Nodo1;
+	  UnmanagedStruct* Nodo2;
+	  UnmanagedStruct* Nodo3;
+	  UnmanagedStruct* Nodo4;
+ 
+}  ClassWrapper;
+
+
+
+
+ 
+
  
 
 using namespace std;
@@ -57,7 +81,7 @@ namespace CppWINRT  // test
 	extern   void *  execut(elnodo *);
 	extern  char contadorvar;
 	extern   elnodo * nuevonodo();
-	extern ast *convertir(elnodo * p);
+	extern UnmanagedStruct *convertir2(elnodo * p);
  
      class clase1  
 	{
@@ -70,9 +94,10 @@ namespace CppWINRT  // test
 			 int  asignar_num(int num, string *s);
 		     double  run(); //retorna la primer variable, antes el parametro era String *s
 			 double  buscar_valor(string *nombre);
-			 ast*    getmainprogram(); 
+			 UnmanagedStruct*    getmainprogram();
 			 char   * getconstante(int posicion);
 			 double getvar (int posicion);
+			 UnmanagedStruct * convertir2(elnodo * p);
 			 
  
 	private:
@@ -187,11 +212,11 @@ void clase1::liberar_nodo( elnodo * p, int n)
         
 }
 
-ast* clase1::getmainprogram() {
-		ast*   temp;
-		temp =   new ast();
-		temp = convertir(pila_programas[0]);
-		liberar_nodo(pila_programas[0], 0);
+UnmanagedStruct* clase1::getmainprogram() {
+	UnmanagedStruct *  temp;
+	//temp = new UnmanagedStruct();
+	temp = convertir2(pila_programas[0]);
+	liberar_nodo(pila_programas[0], 0);
 		return temp;
 	
 	}
@@ -210,7 +235,13 @@ int clase1::main ()
     int i;
  //static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/p1.pr";
  static const	char *  myFileName = "/data/data/Andr1.Andr1/files/p1.pr";
+ int    fd;
+ 
+ fd = dup(fileno(stderr));
+ freopen("/data/data/Andr1.Andr1/files/temp.txt", "w", stderr);
 
+
+ 
  
 
 	if   (1) {     //  {     //LO normal es :   (argc > 1)  --  para depurar con un programa: (argc = 1)
@@ -250,6 +281,7 @@ int clase1::main ()
 					   idx_prg = 0;
 					    
 					   yyparse();
+					   fflush(stderr);
 					   fprintf (stderr, "parse: %d nodos\n", nodos);
 					   fclose(yyin);
 					   i++;
@@ -271,17 +303,22 @@ int clase1::main ()
 		i = 1;
 		do {
 		
-			 	execut(pila_programas[i-1]);
+			 //	execut(pila_programas[i-1]);
 				i++;
 				break;
 		} while (1);  // (i != argc);     //para depurar:  ( (i == 1); //
 
+
+
 		fprintf (stderr, "se crearon: %d nodos\n", nodos);
 		
-		  liberar_nodo(pila_programas[0], 0);
+		  //liberar_nodo(pila_programas[0], 0);
 
 		 fprintf (stderr, "quedan: %d nodos\n", nodos);
-
+		 fflush(stderr);
+		 dup2(fd, fileno(stderr));
+		 close(fd);
+		 std::cout << "PILILO" << std::endl;
 		 //nodos = 0;
 
 	}
@@ -291,6 +328,8 @@ int clase1::main ()
 		
 	return 0;
 }
+
+
 
 
 
@@ -395,26 +434,82 @@ double  clase1::buscar_valor(string  *nombre)
 
 
 
+UnmanagedStruct * clase1::convertir2(elnodo * p)
+{
+	UnmanagedStruct *ast1 = new UnmanagedStruct();
+
+	switch (p->subnodos)
+	{
+	case 0:
+
+		ast1->Tipo = p->tipo;
+		ast1->Numero = p->num;
+		ast1->Subnodos = 0;
+
+		break;
+	case 1:
+
+
+		ast1->Tipo = p->tipo;
+		ast1->Nodo1 = convertir2(p->nodo1);
+		ast1->Numero = p->num;
+		ast1->Subnodos = 1;
+
+		break;
+
+	case 2:
+
+		ast1->Tipo = p->tipo;
+		ast1->Nodo1 = convertir2(p->nodo1);
+		ast1->Nodo2 = convertir2(p->nodo2);
+		ast1->Numero = p->num;
+		ast1->Subnodos = 2;
+
+		break;
+
+	case 3:
+
+		ast1->Tipo = p->tipo;
+		ast1->Nodo1 = convertir2(p->nodo1);
+		ast1->Nodo2 = convertir2(p->nodo2);
+		ast1->Nodo3 = convertir2(p->nodo3);
+		ast1->Numero = p->num;
+		ast1->Subnodos = 3;
+
+		break;
+
+	case 4:
+
+		ast1->Tipo = p->tipo;
+		ast1->Nodo1 = convertir2(p->nodo1);
+		ast1->Nodo2 = convertir2(p->nodo2);
+		ast1->Nodo3 = convertir2(p->nodo3);
+		ast1->Nodo4 = convertir2(p->nodo4);
+		ast1->Numero = p->num;
+		ast1->Subnodos = 4;
+
+		break;
+
+
+
+	default:
+		break;
+	}
+
+	return ast1;
+}
+ 
  }  // end namespace
 
-
- //int clickCount = 1;
- //int GetClickCount() {
-
-	// return clickCount++;
-
- //}
-
-
-extern "C" int Cpp_GetValue()
+ 
+extern "C" char * Cpp_GetValue(  int i)
 {
 	try {
-
-		CppWINRT::clase1 *  p = new CppWINRT::clase1();
-		fprintf(stderr, "\n\nejecucion programa  \n\n");
-		int v = p->run();
-		delete p;
-		return v;
+		char * temp;
+		  
+		temp = &constantes[i][0];
+		 
+		 return temp;
 	}
 
 	catch (exception& e)
@@ -423,10 +518,51 @@ extern "C" int Cpp_GetValue()
 			fprintf(stderr, e.what());
 
 	}
-
-
-
+ 
  }
 
+extern "C" double Cpp_GetValue2(int i)
+{
+	try {
+		double temp;
+		temp = var[i];
+		return temp;
+	}
+
+	catch (exception& e)
+	{
+
+		fprintf(stderr, e.what());
+
+	}
+
+}
+
+ 
+extern "C" UnmanagedStruct  *   PassByReferenceInOut(struct  UnmanagedStruct ** sss) {
+	struct UnmanagedStruct *temp1;
+
+	CppWINRT::clase1 *  ppp = new CppWINRT::clase1();
+	fprintf(stderr, "\n\nejecucion programa  \n\n");
+	int v = ppp->run();
+	 //temp1 =   *sss;
+
+
+	temp1 = ppp->getmainprogram();
+
+	   //*sss =   temp1;
+	   (*sss)->Tipo = temp1->Tipo;
+	   (*sss)->Numero = temp1->Numero;
+	   (*sss)->Nodo1 = temp1->Nodo1;
+	   (*sss)->Subnodos = temp1->Subnodos;
+	   (*sss)->Nodo2 = temp1->Nodo2;
+	   (*sss)->Nodo3 = temp1->Nodo3;
+	   (*sss)->Nodo4 = temp1->Nodo4;
+
+	   temp1 = NULL;
+	   return    *sss;
+
+//	delete ppp;
+}
 
 

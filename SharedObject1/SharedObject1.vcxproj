@@ -99,6 +99,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <TargetExt>.so</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
   </PropertyGroup>
@@ -127,7 +128,7 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalOptions>-fexceptions %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-fexceptions  %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link />
   </ItemDefinitionGroup>

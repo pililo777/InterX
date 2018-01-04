@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ast.h"
+//#include "ast.h"
 #include <string.h>
 
 #include <cstring>
@@ -56,11 +56,11 @@ extern char variables[127][127];
 extern   char constantes[127][127];
 extern double var[127];
 
-extern   elnodo * pila_programas[32];
+extern   ast * pila_programas[32];
 
  
 
-int nodos = 0;
+extern int nodos;
 
 
 
@@ -73,15 +73,15 @@ int nodos = 0;
 namespace CppWINRT  // test
 {
 
-	extern   elnodo * nuevonodo();
+	extern   ast * nuevonodo();
 	extern FILE * yyin;
 	extern char *yytext;
 	extern   char instalavar(char);
 	extern   int yyparse(void);
-	extern   void *  execut(elnodo *);
+	extern   void *  execut(ast *);
 	extern  char contadorvar;
-	extern   elnodo * nuevonodo();
-	extern UnmanagedStruct *convertir2(elnodo * p);
+	extern   ast * nuevonodo();
+	extern UnmanagedStruct *convertir2(ast * p);
  
      class clase1  
 	{
@@ -97,11 +97,11 @@ namespace CppWINRT  // test
 			 UnmanagedStruct*    getmainprogram();
 			 char   * getconstante(int posicion);
 			 double getvar (int posicion);
-			 UnmanagedStruct * convertir2(elnodo * p);
+			 UnmanagedStruct * convertir2(ast * p);
 			 
  
 	private:
-		 void liberar_nodo( elnodo * p, int n);
+		 void liberar_nodo( ast * p, int n);
  	
 	};
    
@@ -116,7 +116,7 @@ double clase1::getvar (int posicion) {
 	return ::var[posicion];
 }
 
-void clase1::liberar_nodo( elnodo * p, int n)
+void clase1::liberar_nodo( ast * p, int n)
 
 {
     
@@ -374,7 +374,7 @@ double clase1::run()   // antes el parametro era una string   String *s
 int clase1::asignar_num (int num, string  *s)
    {
 				char test[80];
-				elnodo * comando, * numero, * variable;
+				ast * comando, * numero, * variable;
 
 				//std::wstring stlString = s->Data();
 				//const wchar_t *  s2 =   stlString.c_str() ;
@@ -399,7 +399,7 @@ int clase1::asignar_num (int num, string  *s)
 
 				variable->tipo = indice_strings;  //nombre de variables numéricas.
 				yytext = test;
-				variable->num = (char) instalavar(contadorvar++);
+				//variable->num = (char) instalavar(contadorvar++);
 				
 				
 				numero = nuevonodo();
@@ -423,18 +423,18 @@ double  clase1::buscar_valor(string  *nombre)
 	//strcpy (test, to_cStr(nombre) ) ;
 	int i= 0;
 	double valor = 0;
-	for (i=0; i<127; i++) {
-		if (!strcmp (variables[i], test)) {
-			valor = var[i];
-			i=127;
-		}
-	}
+	//for (i=0; i<127; i++) {
+	//	if (!strcmp (variables[i], test)) {
+	//		valor = var[i];
+	//		i=127;
+	//	}
+	//}
 	return (valor);
 }
 
 
 
-UnmanagedStruct * clase1::convertir2(elnodo * p)
+UnmanagedStruct * clase1::convertir2(ast * p)
 {
 	UnmanagedStruct *ast1 = new UnmanagedStruct();
 

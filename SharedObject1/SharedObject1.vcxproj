@@ -173,7 +173,6 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ast.cpp" />
     <ClCompile Include="err.cpp" />
     <ClCompile Include="gram.cpp" />
     <ClCompile Include="lex.cpp" />
@@ -181,14 +180,14 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="run.cpp" />
     <ClCompile Include="SharedObject1.cpp" />
+    <ClCompile Include="variab.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ast.h" />
     <ClInclude Include="nodo.h" />
     <ClInclude Include="pch1.h" />
     <ClInclude Include="SharedObject1.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="ytab.h" />
+    <ClInclude Include="vars.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

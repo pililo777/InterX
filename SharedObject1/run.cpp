@@ -1,18 +1,18 @@
 #include "pch.h"
 #include "nodo.h"
 #include "stdio.h"
-#include "ast.h"
+//#include "ast.h"
 
 extern  char variables[127][127];
 extern   char constantes[127][127];
 double var[127];  // 127 variables numericas e indices
 extern FILE * fichero;
+extern int nro_decimales;
+extern ast * procedimientos[127]; //cambiar esta forma
+extern  int idx_prc;   //se ha quitado static de aqui y de abajo
 
-elnodo * procedimientos[127]; //cambiar esta forma
-  int idx_prc = 0;   //se ha quitado static de aqui y de abajo
-
-elnodo * pila_programas[32];
-  int idx_prg = 0;
+extern ast * pila_programas[32];
+extern  int idx_prg;
 
   using namespace std;
  
@@ -24,9 +24,9 @@ namespace CppWINRT
 //extern "C"  int strcmp ( const char *  , const char *   );
 extern  int linenumber;
 extern   int LineaInicial;
-extern struct elnodo * nuevonodo();
+extern struct ast * nuevonodo();
 
-double evalua (elnodo *);
+double evalua (ast *);
 
 
 static int counter1[32];
@@ -66,17 +66,18 @@ char *getstring(char *s)
 
 
 
-elnodo *nodo1(tiponodo, elnodo *);
-elnodo *nodo2(tiponodo, elnodo *,elnodo *);
-elnodo *nodo3(tiponodo, elnodo *,elnodo *,elnodo *);
-elnodo *nodo4(tiponodo, elnodo *,elnodo *,elnodo *,elnodo *);
+ast *nodo1(tiponodo, ast *);
+ast *nodo2(tiponodo, ast *,ast *);
+ast *nodo3(tiponodo, ast *,ast *,ast *);
+ast *nodo4(tiponodo, ast *,ast *,ast *,ast *);
+ast * nodo5(tiponodo Tipo, ast *  a, ast * b, ast * c, ast * d, ast * e);
 
 
 
 
-elnodo * nodo1(tiponodo  Tipo, elnodo * a)
+ast * nodo1(tiponodo  Tipo, ast * a)
 {
-elnodo * p;
+ast * p;
 p = nuevonodo();
 p->tipo = Tipo;
 p->num = 777;
@@ -89,10 +90,10 @@ p->subnodos = 1;
 return p;
 }
 
-elnodo * nodo2(tiponodo Tipo, elnodo * a, elnodo * b)
+ast * nodo2(tiponodo Tipo, ast * a, ast * b)
 
 {
-elnodo * p;
+ast * p;
 p = nuevonodo();
 p->tipo = Tipo;
 p->num = 777;
@@ -106,9 +107,9 @@ return p;
 
 }
 
-elnodo * nodo3(tiponodo Tipo, elnodo * a, elnodo * b, elnodo *  c)
+ast * nodo3(tiponodo Tipo, ast * a, ast * b, ast *  c)
 {
-elnodo * p;
+ast * p;
 p = nuevonodo();
 p->tipo = Tipo;
 p->num = 777;
@@ -124,9 +125,9 @@ return p;
 
 }
 
-elnodo * nodo4(tiponodo Tipo, elnodo *  a, elnodo * b, elnodo * c, elnodo * d)
+ast * nodo4(tiponodo Tipo, ast *  a, ast * b, ast * c, ast * d)
 {
-elnodo * p;
+ast * p;
 p = nuevonodo();
 p->tipo = Tipo;
 p->num = 777;
@@ -141,58 +142,76 @@ return p;
 
 }
 
-
-ast *convertir(elnodo * p)
+ast * nodo5(tiponodo Tipo, ast *  a, ast * b, ast * c, ast * d, ast * e)
 {
-	 ast *ast1 =    new ast();
-	
-	 switch (p->subnodos)
-	 {
-	 case 0:
-		 ast1->setast1((int) p->tipo, NULL, p->num);
-		 break;
-	 case 1:
-		 		 
-		 ast1->setast1((int) p->tipo,  convertir(p->nodo1), p->num);
-		 break;
+	ast * p;
+	p = nuevonodo();
+	p->tipo = Tipo;
+	p->num = 777;
+	p->nodo1 = a;
+	p->nodo2 = b;
+	p->nodo3 = c;
+	p->nodo4 = d;
+	p->nodo4 = e;
+	p->subnodos = 5;
+	//p->nrolinea2 = linenumber;
 
-	 case 2:
-		 
-		 ast1->setast2((int) p->tipo, convertir(p->nodo1), convertir(p->nodo2) , p->num);
-		  
-		 break;
+	return p;
 
-
-	 case 3:
-		 
-		  ast1->setast3((int) p->tipo, convertir(p->nodo1), convertir(p->nodo2), convertir(p->nodo3)  , p->num);
-		  
-		 break;
-
-	  case 4:
-		 
-		 
-		  ast1->setast4((int) p->tipo, convertir(p->nodo1), convertir(p->nodo2), convertir(p->nodo3)  , convertir(p->nodo4)  , p->num);
-		  
-		 break;
-
-
-
-	 default:
-		 break;
-	 }
-
-	 return ast1;
 }
+//
+//
+//ast *convertir(ast * p)
+//{
+//	 ast *ast1 =    new ast();
+//	
+//	 switch (p->subnodos)
+//	 {
+//	 case 0:
+//		 ast1->setast1((int) p->tipo, NULL, p->num);
+//		 break;
+//	 case 1:
+//		 		 
+//		 ast1->setast1((int) p->tipo,  convertir(p->nodo1), p->num);
+//		 break;
+//
+//	 case 2:
+//		 
+//		 ast1->setast2((int) p->tipo, convertir(p->nodo1), convertir(p->nodo2) , p->num);
+//		  
+//		 break;
+//
+//
+//	 case 3:
+//		 
+//		  ast1->setast3((int) p->tipo, convertir(p->nodo1), convertir(p->nodo2), convertir(p->nodo3)  , p->num);
+//		  
+//		 break;
+//
+//	  case 4:
+//		 
+//		 
+//		  ast1->setast4((int) p->tipo, convertir(p->nodo1), convertir(p->nodo2), convertir(p->nodo3)  , convertir(p->nodo4)  , p->num);
+//		  
+//		 break;
+//
+//
+//
+//	 default:
+//		 break;
+//	 }
+//
+//	 return ast1;
+//}
+//
+//
 
 
 
 
-
-
-void * execut(elnodo *  a)
+void * execut(ast *  a)
 {
-elnodo * p;
+ast * p;
 //p = nuevonodo();
 
 p = a;
@@ -331,7 +350,7 @@ switch (p->tipo) {
 	case leer:
 		//fprintf("leer var numerica\n");
 		{
-		 elnodo *pp;   //se puso esto para depuracion (watch)
+		 ast *pp;   //se puso esto para depuracion (watch)
 		 int inum = 0;
 		double fnum;
 		pp = p;
@@ -346,7 +365,7 @@ switch (p->tipo) {
 		//fprintf("leer var numerica\n");
 		{
 		int indice;
-		elnodo * pp ;
+		ast * pp ;
 	 
 		char texto[255]  ;
         //pp = p;
@@ -406,13 +425,13 @@ switch (p->tipo) {
 return (0);
 }
 
-void evalua_doble(elnodo * p, elnodo * q) {
+void evalua_doble(ast * p, ast * q) {
 		double result1, result2;
 
 }
 
 
-double evalua (elnodo * p) {
+double evalua (ast * p) {
  
 
 	switch (p->tipo) {

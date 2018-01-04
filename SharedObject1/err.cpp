@@ -4,7 +4,7 @@
 extern "C" int exit(int);
 
 #include "stdio.h"
-int linenumber = 1;
+extern int linenumber ;
 
 extern FILE * fichero;
 

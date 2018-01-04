@@ -110,7 +110,25 @@ enum tipos_nodo
         }
 
 
+       public struct Struct_variable
+        {
+            public  char tipo;
+            public string nombre;
+            public string valstring;
+            public double numero;
+            public int procedimiento;
+            public short backup;
+            public int dim1;
+            public int dim2;
+        };
 
+        public Struct_variable[]   array_variables  = new Struct_variable[256]    ;
+
+        private int[]  arrayVectores   = new int[32]   ;
+        private int[] arrayVectoresAlfa =  new int[32]   ;
+
+        private double[][] arrayVectoresValores  = new double[32][];
+        private string[][] arrayVectoresAlfaValores = new string[32][];
 
 
         protected override void OnCreate(Bundle bundle)
@@ -207,10 +225,9 @@ enum tipos_nodo
                 //edit1.Text = System.IO.File.ReadAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt");
                 //edit1.Text = System.IO.File.ReadAllText("/data/data/Andr1.Andr1/files/test.txt");
                 
-                System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", text2);
-                edit1.Text = text2;
-
-            }
+                    System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", text2);
+                    edit1.Text = text2;
+                }
 
                 catch (Exception ee)
                 {
@@ -239,13 +256,14 @@ enum tipos_nodo
         int[] counter1 = new int[20];
         StringWriter sw = new StringWriter();
 
-
+ 
 
         // la funcion fue migrada el 22 de diciembre de 2017
         // estaba en c++ y fue convertida a c#
         unsafe string execut(elnodo* a)
         {
             elnodo* p;
+             
             //p = nuevonodo();
 
             tipos_nodo t;
@@ -253,9 +271,11 @@ enum tipos_nodo
 
             p = a;
 
+            System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
 
             switch (t)
             {
+                  
 
                 case tipos_nodo.decimales:
 
@@ -278,8 +298,10 @@ enum tipos_nodo
                     break;
 
                 case tipos_nodo.imprimir_var_alfa:
-
-                    sw.WriteLine(constantes[(int)var[(int)((elnodo*)(p->Nodo1))->Numero]]);
+                    { 
+                     int n =  (int)((elnodo*)(p->Nodo1))->Numero;
+                    sw.WriteLine(array_variables[n].valstring);
+                    }
                     break;
 
                 case tipos_nodo.imprimir_expresion:
@@ -325,13 +347,24 @@ enum tipos_nodo
                     break;
 
                 case tipos_nodo.asigna_num:
-
-                    var[(int)((elnodo*)p->Nodo1)->Numero] = evalua((elnodo*)p->Nodo2);
+                    { 
+                        int n = (int)((elnodo*)p->Nodo1)->Numero;
+                        array_variables[n].numero = evalua((elnodo*)p->Nodo2);
+                        //var[(int)((elnodo*)p->Nodo1)->Numero] = evalua((elnodo*)p->Nodo2);
+                    }
                     break;
 
                 case tipos_nodo.asigna_alfa:
 
-                    var[(int)((elnodo*)p->Nodo1)->Numero] = ((elnodo*)p->Nodo2)->Numero;
+                    { 
+                        int n = (int)((elnodo*)p->Nodo1)->Numero;
+                        int  num  =(int) ((elnodo*)p->Nodo2)->Numero;
+ 
+                        //var[n] = num ;
+ 
+                        array_variables[n].valstring  = constantes[num];
+                        array_variables[n].tipo = 'S';
+                    }
                     break;
 
                 case tipos_nodo.mientras:
@@ -426,14 +459,27 @@ enum tipos_nodo
         unsafe double evalua(elnodo* p)
         {
 
-
             switch ((tipos_nodo)p->Tipo)
             {
 
-                case tipos_nodo.indice_strings:    //una variable numerica
-                    return var[(int)p->Numero];
+                case tipos_nodo.indice_strings:    //una variable numerica,
+
+                    { 
+                        try
+                        {
+                            int n = (int)   ((elnodo*)p)->Numero;
+                            return array_variables[n].numero;
+                        }
+                        catch (Exception ee)
+                        {
+                            Console.WriteLine(ee.StackTrace.ToString());
+
+                        }
+                        break;
+                    }
 
                 case tipos_nodo.un_numero:
+                    
                     return p->Numero;     //un numero constante
 
                 case tipos_nodo.resta:

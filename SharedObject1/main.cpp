@@ -81,7 +81,7 @@ namespace CppWINRT  // test
 	extern   void *  execut(ast *);
 	extern  char contadorvar;
 	extern   ast * nuevonodo();
-	extern UnmanagedStruct *convertir2(ast * p);
+	//extern UnmanagedStruct *convertir2(ast * p);
  
      class clase1  
 	{
@@ -485,6 +485,19 @@ UnmanagedStruct * clase1::convertir2(ast * p)
 		ast1->Nodo2 = convertir2(p->nodo2);
 		ast1->Nodo3 = convertir2(p->nodo3);
 		ast1->Nodo4 = convertir2(p->nodo4);
+		ast1->Numero = p->num;
+		ast1->Subnodos = 4;
+
+		break;
+
+	case 5:
+
+		ast1->Tipo = p->tipo;
+		ast1->Nodo1 = convertir2(p->nodo1);
+		ast1->Nodo2 = convertir2(p->nodo2);
+		ast1->Nodo3 = convertir2(p->nodo3);
+		ast1->Nodo4 = convertir2(p->nodo4);
+		ast1->Nodo4 = convertir2(p->nodo5);
 		ast1->Numero = p->num;
 		ast1->Subnodos = 4;
 

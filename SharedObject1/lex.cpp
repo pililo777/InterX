@@ -895,7 +895,7 @@ int instala(int x)
    while ( i < (yy) ) { 
        constantes[xx][i] = constantes[xx][i+1]; i++;
     }
-   if (i > 3)
+   if (i > 0)
 	   constantes[xx][i] = '\0';
    else
 	   fprintf(stderr, "error en instala\n");

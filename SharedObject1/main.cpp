@@ -234,11 +234,11 @@ int clase1::main ()
 {
     int i;
  //static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/p1.pr";
- static const	char *  myFileName = "/data/data/Andr1.Andr1/files/p1.pr";
+ static const	char *  myFileName = "/sdcard/sdcard/data/data/Andr1.Andr1/files/p1.pr";
  int    fd;
  
  fd = dup(fileno(stderr));
- freopen("/data/data/Andr1.Andr1/files/temp.txt", "w", stderr);
+ freopen("/sdcard/data/data/Andr1.Andr1/files/temp.txt", "w", stderr);
 
 
  
@@ -340,7 +340,7 @@ double clase1::run()   // antes el parametro era una string   String *s
 
 				 
 //			static const	char *  myFileName  = "/sdcard/data/data/Andr1.Andr1/files/test.txt";
-			static const	char *  myFileName = "/data/data/Andr1.Andr1/files/test.txt";
+			static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/test.txt";
 			static const char *mensaje = "por lo menos esto va bien";
 				 
 				fprintf(stderr, "\n\n   RUNNING.....\n\n");
@@ -539,6 +539,28 @@ extern "C" double Cpp_GetValue2(int i)
 	try {
 		double temp;
 		temp = var[i];
+		return temp;
+	}
+
+	catch (exception& e)
+	{
+
+		fprintf(stderr, e.what());
+
+	}
+
+}
+ 
+#include "vars.h";
+
+extern "C" char * Cpp_GetValue3(int i)
+{
+	try {
+		char * temp;
+
+		//temp = &constantes[i][0];
+		temp = array_variables[i].nombre;
+
 		return temp;
 	}
 

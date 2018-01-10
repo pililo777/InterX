@@ -4,7 +4,7 @@
 #include "stdio.h"
 #include "vars.h"
 #include "nodo.h"
-#include "malloc.h"
+ 
   
 //extern  int yylex();
 extern   ast * pila_programas[32];
@@ -106,7 +106,10 @@ namespace CppWINRT
 
 
 extern  int yylex();
+ 
+#include "malloc.h"
 
+ 
 
 
  extern int nro_decimales;

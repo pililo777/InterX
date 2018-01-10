@@ -895,8 +895,11 @@ int instala(int x)
    while ( i < (yy) ) { 
        constantes[xx][i] = constantes[xx][i+1]; i++;
     }
-   if (i > 0)
+   if (i > 0) {
 	   constantes[xx][i] = '\0';
+	   fflush(stderr);
+	   fprintf(stderr, "%d ->  %s \n", i, constantes[xx]);
+   }
    else
 	   fprintf(stderr, "error en instala\n");
        	 
@@ -924,7 +927,8 @@ char instalavar(int x)
    //strcpy (variables[x],  yytext);
    strcpy  (array_variables[x].nombre, yytext);
 // if (depurar)
-   //printf("VARIABLE %d  --    %s\n", x, variables[x]);
+   fflush(stderr);
+   fprintf(stderr,   "VARIABLE %d  --    %s\n", x, array_variables[x].nombre);
   // insAST(yytext) ;
 /*   printf("%d  --    %s\n", x, variables[x]);  */
    return x;

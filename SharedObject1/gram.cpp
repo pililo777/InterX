@@ -1138,13 +1138,13 @@ case 1:
 //#line 73 "grammar.y"
 {  pila_programas[idx_prg] = (yyvsp[0].nodo); /* stmtseq */ ;  idx_prg++ ; 
 if (depurar)
-  	printf("se ha reducido el programa por la primera  grammar.y\n"); ;
+  	fprintf(stderr, "se ha reducido el programa por la primera  grammar.y\n"); ;
     break;}
 case 2:
 //#line 76 "grammar.y"
 {
 if (depurar)
-  	printf("se ha reducido el programa por la segunda regla de grammar.y\n");
+  	fprintf(stderr,  "se ha reducido el programa por la segunda regla de grammar.y\n");
  	pila_programas[idx_prg] = (yyvsp[-2].nodo); /* stmtseq */ ;  idx_prg++; ;
     break;}
 case 3:
@@ -1577,7 +1577,7 @@ case 108:
     break;}
 case 109:
 //#line 236 "grammar.y"
-{ yyval.nodo = yyvsp[0].nodo; ;
+{ yyval.nodo = yyvsp[0].nodo; 
     break;}
 case 110:
 //#line 237 "grammar.y"
@@ -1639,7 +1639,7 @@ case 123:
                         procedimientos[idx_prc] = yyval.nodo   ;   /* revisar este metodo */	
 			array_variables[(int) yyvsp[-2].nodo->num].procedimiento = idx_prc  ;
                         array_variables[(int) yyvsp[-2].nodo->num].tipo = 'P'  ;
-                        printf("P: %s\n", array_variables[(int) yyvsp[-2].nodo->num].nombre);
+                        fprintf( stderr,     "P: %s\n", array_variables[(int) yyvsp[-2].nodo->num].nombre);
 			idx_prc++;
 			;
     break;}
@@ -1651,9 +1651,9 @@ case 124:
                         procedimientos[idx_prc] = yyval.nodo   ;   /* revisar este metodo */	
 			array_variables[(int) yyvsp[-5].nodo->num].procedimiento = idx_prc  ;
                         array_variables[(int) yyvsp[-5].nodo->num].tipo = 'F'  ;
-			printf("F: %s, %d\n", array_variables[(int) yyvsp[-5].nodo->num].nombre, idx_prc);
+			fprintf( stderr,     "F: %s, %d\n", array_variables[(int) yyvsp[-5].nodo->num].nombre, idx_prc);
 			idx_prc++;
-			;
+ 
     break;}
 }
    /* the action file gets copied in in place of this dollarsign */

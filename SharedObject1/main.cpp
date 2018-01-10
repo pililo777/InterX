@@ -234,11 +234,11 @@ int clase1::main ()
 {
     int i;
  //static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/p1.pr";
- static const	char *  myFileName = "/sdcard/sdcard/data/data/Andr1.Andr1/files/p1.pr";
+ static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/p1.pr";
  int    fd;
  
  fd = dup(fileno(stderr));
- freopen("/sdcard/data/data/Andr1.Andr1/files/temp.txt", "w", stderr);
+ //freopen("/sdcard/data/data/Andr1.Andr1/files/temp.txt", "w", stderr);
 
 
  
@@ -346,26 +346,26 @@ double clase1::run()   // antes el parametro era una string   String *s
 				fprintf(stderr, "\n\n   RUNNING.....\n\n");
 				 
 				 
-				strcpy (test, "p1.pr") ;
-				fichero = fopen (myFileName , "w"  ); 
+				//strcpy (test, "p1.pr") ;
+				//fichero = fopen (myFileName , "w"  ); 
 
-				if (fichero == NULL) {
-				
-					fprintf(stderr, "\n\n   ERROR EN FICHERO TEST.TXT.....\n\n");
-					return 1;
-				
-				}
-				else
-				{
-					fprintf(stderr, "\n\n   FICHERO abierto!!!!.....\n\n");
-					//fwrite(mensaje, 1, 25, fichero);
+				//if (fichero == NULL) {
+				//
+				//	fprintf(stderr, "\n\n   ERROR EN FICHERO TEST.TXT.....\n\n");
+				//	return 1;
+				//
+				//}
+				//else
+				//{
+				//	fprintf(stderr, "\n\n   FICHERO abierto!!!!.....\n\n");
+				//	//fwrite(mensaje, 1, 25, fichero);
  
-				}
+				//}
 			
 	 
 				main();
 
-				fclose (fichero);
+				//fclose (fichero);
 				return(::var[0]);  //gracias, intellisense
 				
 				

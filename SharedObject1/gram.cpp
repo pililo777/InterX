@@ -13,6 +13,28 @@ extern   int idx_prg;
 extern   int idx_prc;
 extern   void yyerror(char *);
 
+
+
+//#line 2 "grammar.y"
+//extern int idx_prc;
+extern int idx_prg;
+extern ast   * procedimientos[127]; //cambiar esta forma
+
+
+extern ast   * pila_programas[32];
+extern ast   * pila_records[32]; // pila de registros
+
+namespace CppWINRT
+{
+#define YYDEBUG 1
+
+
+extern  int yylex();
+ 
+#include "malloc.h"
+
+
+
 #define YYBISON 1  /* Identify Bison output.  */
 
 #define	GUARDAR	258
@@ -90,25 +112,6 @@ extern   void yyerror(char *);
 #define	CONTINUAR	330
 #define	SALIR	331
 #define	ACTUALIZAR	332
-
-//#line 2 "grammar.y"
-//extern int idx_prc;
-extern int idx_prg;
-extern ast   * procedimientos[127]; //cambiar esta forma
-
-
-extern ast   * pila_programas[32];
-extern ast   * pila_records[32]; // pila de registros
-
-namespace CppWINRT
-{
-#define YYDEBUG 1
-
-
-extern  int yylex();
- 
-#include "malloc.h"
-
  
 
 

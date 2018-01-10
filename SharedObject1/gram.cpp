@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "vars.h"
 #include "nodo.h"
+#include "malloc.h"
   
 //extern  int yylex();
 extern   ast * pila_programas[32];
@@ -102,7 +103,7 @@ extern ast   * pila_records[32]; // pila de registros
 namespace CppWINRT
 {
 #define YYDEBUG 1
-#include "malloc.h"
+
 
 extern  int yylex();
 

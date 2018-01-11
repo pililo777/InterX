@@ -1,7 +1,7 @@
 /*  A Bison parser, made from grammar.y with Bison version GNU Bison version 1.24
   */
 #include "pch.h"
-#include "stdio.h"
+//#include "stdio.h"
 #include "vars.h"
 #include "nodo.h"
  
@@ -9,7 +9,7 @@
 //extern  int yylex();
 extern   ast * pila_programas[32];
 extern   ast * procedimientos[127]; //cambiar esta forma
-extern   int idx_prg;
+ 
 extern   int idx_prc;
 extern   void yyerror(char *);
 
@@ -117,7 +117,7 @@ extern  int yylex();
 
  extern int nro_decimales;
  extern long memoria;
-#define YYBISON 1  /* Identify Bison output.  */
+ 
 
 
  

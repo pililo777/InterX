@@ -6,6 +6,10 @@ using System;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Threading;
+using Android.Content;
 
 namespace Andr1
 {
@@ -42,7 +46,7 @@ enum tipos_nodo
     [Activity(Label = "Andr1", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-
+        System.Timers.Timer mtimer = new System.Timers.Timer();
         String[] constantes = new String[127];
         double[] var = new double[127];
 
@@ -144,7 +148,10 @@ enum tipos_nodo
             Button button = FindViewById<Button>(Resource.Id.button1);
 
             button.Click += new EventHandler(Cpp_GetValue2Click);
-
+            mtimer.Interval = 5000;
+            mtimer.Enabled = true;
+            mtimer.Elapsed += Mtimer_Elapsed;
+            mtimer.Start();
 
 
         }
@@ -256,6 +263,7 @@ enum tipos_nodo
                     EditText edit1 = FindViewById<EditText>(Resource.Id.editText1);
                     System.IO.File.WriteAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt", text2);
                     edit1.Text = text2;
+                    mtimer.Stop();
                 }
 
                 catch (Exception ee)
@@ -700,6 +708,15 @@ enum tipos_nodo
 
 
 
+                case tipos_nodo.salir:
+                    {
+                        retornar = 1;
+                        salir1 = 1;
+                    }
+                    break;
+
+
+
 
                 default:
                     Console.WriteLine(p->Tipo);
@@ -958,12 +975,6 @@ enum tipos_nodo
                     break;
 
 
-                case tipos_nodo.salir:
-                    {
-                        retornar = 1;
-                        salir1 = 1;
-                    }
-                    break;
 
 
 
@@ -976,12 +987,67 @@ enum tipos_nodo
             }
             return 0;
         }
+
+        private  void Mtimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            EditText edit1 = FindViewById<EditText>(Resource.Id.editText1);
+            //RunOnUiThread(() => {
+            //    edit1.Text = sw.ToString() ;
+            //});
+
+            //StartUpdate();
+
+
+
+            //this.RunOnUiThread(() => { FindViewById<EditText>(Resource.Id.editText1).Text = sw.ToString(); });
+            //Task.Delay(100);
+
+            Action action = delegate { edit1.Text = sw.ToString(); };
+            edit1.Post(action);
+            //Thread.Sleep(1000);
+            edit1.RequestFocus();
+
+
+
+
+        }
+
+        private CancellationTokenSource cts;
+        public void StartUpdate()
+        {
+            if (cts != null) cts.Cancel();
+            cts = new CancellationTokenSource();
+            var ignore =   UpdaterAsync(cts.Token);
+        }
  
+
+        public async Task UpdaterAsync(CancellationToken token)
+        {
+            EditText edit1 = FindViewById<EditText>(Resource.Id.editText1);
+            
+                edit1.Text = sw.ToString();
+                await Task.Delay(100, token);
+ 
+        }
+
     }
  
 }
 
- 
+//public class TestEvent
+//{
+//    public async Task Func(IProgress<string> progress)
+//    {
+//        progress.Report("Sleeping");
+//        await Task.Delay(5000);
+//        progress.Report("Hello World");
+
+//        Activity.RunOnUiThread(() => {
+//            mtxtProgress.Text = string.Format("{00}:{00}:{00}", hours, min, sec);
+//        });
+
+//    }
+//}
 
 
 

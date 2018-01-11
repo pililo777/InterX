@@ -216,7 +216,8 @@ UnmanagedStruct* clase1::getmainprogram() {
 	UnmanagedStruct *  temp;
 	//temp = new UnmanagedStruct();
 	temp = convertir2(pila_programas[0]);
-	liberar_nodo(pila_programas[0], 0);
+	//liberar_nodo(pila_programas[0], 0);
+	fprintf(stderr, "++++++++++++++++++++++++++++++++++++++++++++++++++++++++  FINALIZAMOS  *****************************************************");
 		return temp;
 	
 	}

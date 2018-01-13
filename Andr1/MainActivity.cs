@@ -26,7 +26,7 @@ namespace Andr1
     //};
 
 
-enum tipos_nodo
+ public    enum tipos_nodo
 {
 	un_numero = 1, desde, nombre_de_variable, dimensionar, asigna_vector, evalua_vector, dibuja_linea, dibuja_circulo,
 	indice_strings, procedimiento, secuencia, imprimir, convertir_texto_a_numero, convertir_numero_a_texto,
@@ -71,7 +71,7 @@ enum tipos_nodo
 
 
         [StructLayout(LayoutKind.Sequential)]
-        unsafe struct elnodo
+        public unsafe struct elnodo
         {
             //public int n;
             public int Tipo;
@@ -84,6 +84,7 @@ enum tipos_nodo
             public IntPtr Nodo2;
             public IntPtr Nodo3;
             public IntPtr Nodo4;
+            public IntPtr Nodo5;
             //public ClassWrapper nodo2;
             //public ClassWrapper nodo3;
             //public ClassWrapper nodo4;
@@ -116,8 +117,7 @@ enum tipos_nodo
             //    public static extern
             //       void DoubeIndirection(ref ClassWrapper s);
         }
-
-
+ 
        public struct Struct_variable
         {
             public  char tipo;
@@ -130,15 +130,14 @@ enum tipos_nodo
             public int dim2;
         };
 
-        public Struct_variable[]   array_variables  = new Struct_variable[256]    ;
+        public Struct_variable[]   array_variables  = new Struct_variable[256] ;
 
         private int[]  arrayVectores   = new int[32]   ;
         private int[] arrayVectoresAlfa =  new int[32]   ;
 
         private double[][] arrayVectoresValores  = new double[32][];
         private string[][] arrayVectoresAlfaValores = new string[32][];
-
-
+ 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -162,8 +161,7 @@ enum tipos_nodo
             Toast.MakeText(this, "click en el boton3", ToastLength.Long).Show();
 
         }
-
-
+ 
         unsafe protected void Cpp_GetValue2Click(object sender, EventArgs e)
 
         {
@@ -171,8 +169,9 @@ enum tipos_nodo
             int i;
             //string  sb = new string(' ', 255);
             //StringBuilder sb = new StringBuilder(256);
-            elnodo s = new elnodo();
-           
+            elnodo  s = new elnodo();
+            nodo programa;
+
 
             unsafe
             {
@@ -192,6 +191,11 @@ enum tipos_nodo
 
                 s = (elnodo)Marshal.PtrToStructure(pList, typeof(elnodo));
 
+                elnodo* s2;
+                s2 = &s;
+
+                programa = convertir3( s2);
+ 
                 //traemos las variables numericas
                 for (i = 0; i < 127; i++)
                 {
@@ -256,7 +260,7 @@ enum tipos_nodo
 
                     sw.Close();
                     sw = new StringWriter();
-                    string text2 = execut(&s);
+                    string text2 = execut(programa);
 
                 //edit1.Text = System.IO.File.ReadAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt");
                 //edit1.Text = System.IO.File.ReadAllText("/data/data/Andr1.Andr1/files/test.txt");
@@ -271,15 +275,9 @@ enum tipos_nodo
                     Console.WriteLine(ee.Message);
 
                 }
-
-
-
+ 
             }
-
-
-
-
-
+ 
         /*
      [Java.Interop.Export("button_OnClick")]
      public void button_OnClick(View v)
@@ -301,15 +299,15 @@ enum tipos_nodo
 
         // la funcion fue migrada el 22 de diciembre de 2017
         // estaba en c++ y fue convertida a c#
-        unsafe string execut(elnodo* a)
+        unsafe string execut( nodo a)
  
         {
-            elnodo* p;
+             nodo  p;
              
             //p = nuevonodo();
 
             tipos_nodo t;
-            t = (tipos_nodo)a->Tipo;
+            t = (tipos_nodo)a.Tipo;
 
             p = a;
 
@@ -317,9 +315,7 @@ enum tipos_nodo
             {
                 return sw.ToString();
             }
-
-
-
+ 
             switch (t)
             {
 
@@ -330,48 +326,40 @@ enum tipos_nodo
 
                     //edit1.Text = sw.ToString();
                     break;
-
-
-
-
+ 
                 case tipos_nodo.decimales:
 
-                    nro_decimales = ((int)((elnodo*)p->Nodo1)->Numero);
+                    nro_decimales = ((int) p.Nodo1.Numero);
                     break;
-
-
-
+ 
                 case tipos_nodo.secuencia:
 
-                    execut((elnodo*)p->Nodo1);
+                    execut( p.Nodo1);
 
-                    execut((elnodo*)p->Nodo2);
+                    execut( p.Nodo2);
                     break;
 
                 case tipos_nodo.imprimir_literal:
 
-                    sw.WriteLine(constantes[(int)((elnodo*)p->Nodo1)->Numero]);
+                    sw.WriteLine(constantes[(int)( p.Nodo1).Numero]);
                     //System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
 
                     //  edit1 = FindViewById<EditText>(Resource.Id.editText1);
 
                     //edit1.Text = sw.ToString();
-
-
-
+ 
                     break;
 
                 case tipos_nodo.imprimir_var_alfa:
                     { 
-                     int n =  (int)((elnodo*)(p->Nodo1))->Numero;
+                     int n =  (int)( (p.Nodo1)).Numero;
                     sw.WriteLine(array_variables[n].valstring);
                         //System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
 
                         //  edit1 = FindViewById<EditText>(Resource.Id.editText1);
 
                         //edit1.Text = sw.ToString();
-
-
+ 
                     }
                     break;
 
@@ -382,29 +370,23 @@ enum tipos_nodo
                     {
 
                         case 0:
-                            sw.WriteLine(evalua((elnodo*)p->Nodo1));
+                            sw.WriteLine(evalua( p.Nodo1));
                             //System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
 
                             //EditText edit2 = FindViewById<EditText>(Resource.Id.editText1);
 
                             //edit2.Text = sw.ToString();
-
-
-
-
+ 
                             break;
-
-
+ 
                         default:
-                            sw.WriteLine(evalua((elnodo*)p->Nodo1));
+                            sw.WriteLine(evalua( p.Nodo1));
                             //System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
 
                             //EditText edit3 = FindViewById<EditText>(Resource.Id.editText1);
 
                             //edit3.Text = sw.ToString();
-
-
-
+ 
                             break;
 
                     };
@@ -415,7 +397,7 @@ enum tipos_nodo
 
                 case tipos_nodo.imprimir_varios:
 
-                    execut((elnodo*)p->Nodo1);
+                    execut( p.Nodo1);
                     sw.WriteLine("\r\n");
                     System.IO.File.WriteAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
                     break;
@@ -424,9 +406,9 @@ enum tipos_nodo
 
                 case tipos_nodo.asigna_num:
                     { 
-                        int n = (int)((elnodo*)p->Nodo1)->Numero;
-                        array_variables[n].numero = evalua((elnodo*)p->Nodo2);
-                        //var[(int)((elnodo*)p->Nodo1)->Numero] = evalua((elnodo*)p->Nodo2);
+                        int n = (int)( p.Nodo1).Numero;
+                        array_variables[n].numero = evalua( p.Nodo2);
+                        //var[(int)( p.Nodo1).Numero] = evalua( p.Nodo2);
                         array_variables[n].tipo = 'N';
                     }
                     break;
@@ -434,8 +416,8 @@ enum tipos_nodo
                 case tipos_nodo.asigna_alfa:
 
                     { 
-                        int n = (int)((elnodo*)p->Nodo1)->Numero;
-                        int  num  =(int) ((elnodo*)p->Nodo2)->Numero;
+                        int n = (int)( p.Nodo1).Numero;
+                        int  num  =(int) ( p.Nodo2).Numero;
  
                         //var[n] = num ;
  
@@ -446,9 +428,9 @@ enum tipos_nodo
 
                 case tipos_nodo.mientras:
 
-                    while (evalua((elnodo*)p->Nodo1) == (double)1)
+                    while (evalua( p.Nodo1) == (double)1)
 
-                        execut((elnodo*)p->Nodo2);
+                        execut( p.Nodo2);
 
 
                     break;
@@ -460,7 +442,7 @@ enum tipos_nodo
                         // int inum = 0;
                         //double fnum;
                         //pp = p;
-                        //inum = (int)p->nodo1->num;
+                        //inum = (int)p.nodo1.num;
 
                         //scanf("%lf", &fnum );
                         //var[inum] = fnum;
@@ -479,22 +461,22 @@ enum tipos_nodo
                         // if (error_getstring )
                         //     getstring (texto);
 
-                        //indice = (int)p->nodo1->num;
+                        //indice = (int)p.nodo1.num;
                         //strcpy ( constantes [(int)var[indice]], texto);
                     }
                     break;
 
                 case tipos_nodo.si:
 
-                    if (evalua((elnodo*)p->Nodo1) > 0)
+                    if (evalua( p.Nodo1) > 0)
                     {
-                        execut((elnodo*)p->Nodo2);
+                        execut( p.Nodo2);
                     }
                     else
-                        if (p->Subnodos == 3)
+                        if (p.Subnodos == 3)
                     {
 
-                        execut((elnodo*)p->Nodo3);
+                        execut( p.Nodo3);
                     };
 
 
@@ -503,17 +485,17 @@ enum tipos_nodo
                 case tipos_nodo.desde:
 
                     {
-                        int x = (int)((elnodo*)p->Nodo1)->Numero;
+                        int x = (int)( p.Nodo1).Numero;
                         retornar = 0;
                         indice_ctr++;
-                        array_variables[x].numero =  evalua((elnodo*)p->Nodo2);
+                        array_variables[x].numero =  evalua( p.Nodo2);
                         counter1[indice_ctr] = (long)   array_variables[x].numero;
 
-                        for (counter1[indice_ctr] = counter1[indice_ctr]; counter1[indice_ctr] <= (long)evalua((elnodo*)p->Nodo3); counter1[indice_ctr]++)
+                        for (counter1[indice_ctr] = counter1[indice_ctr]; counter1[indice_ctr] <= (long)evalua( p.Nodo3); counter1[indice_ctr]++)
                         {
 
                              array_variables[x].numero = (double) counter1[indice_ctr];
-                            execut((elnodo*)p->Nodo4);
+                            execut( p.Nodo4);
                             if (retornar == 1)
                             {
                                 retornar = 0;
@@ -523,15 +505,13 @@ enum tipos_nodo
                                     break;
                                 }
                             }
-
-
-
+ 
                         }
 
                         indice_ctr--;
-
+ 
                     }
-
+ 
                     break;
 
                 case tipos_nodo.dimensionar:
@@ -541,19 +521,19 @@ enum tipos_nodo
                         int i;
                         int j;
                         int k = 1;
-                        j = (int) ((elnodo*) p->Nodo2)->Numero;  //NUMBER
-                        if (p->Subnodos == 3)
-                            k = (int) ((elnodo*)p->Nodo3)->Numero;
+                        j = (int) (  p.Nodo2).Numero;  //NUMBER
+                        if (p.Subnodos == 3)
+                            k = (int) ( p.Nodo3).Numero;
                         vector =  (j * k); // cantidad
 
                         arrayVectoresValores[idx_vec] = new double [vector];
 
                         //for (i = 0; i < (j * k); i++) vector[i] = 0;
                         arrayVectores[idx_vec] = vector;
-                        //var[(int) p->nodo1->num] = idx_vec;
-                        array_variables[(int)  ((elnodo*) p->Nodo1)->Numero].numero = (double)idx_vec;
-                        array_variables[(int)  ((elnodo*) p->Nodo1)->Numero].dim1 = (int)j;
-                        array_variables[(int)  ((elnodo*) p->Nodo1)->Numero].dim2 = (int)k;
+                        //var[(int) p.nodo1.num] = idx_vec;
+                        array_variables[(int)  (  p.Nodo1).Numero].numero = (double)idx_vec;
+                        array_variables[(int)  (  p.Nodo1).Numero].dim1 = (int)j;
+                        array_variables[(int)  (  p.Nodo1).Numero].dim2 = (int)k;
  
                         idx_vec++;
 
@@ -568,19 +548,19 @@ enum tipos_nodo
                         int i;
                         int j;
                         int k = 1;
-                        j = (int)((elnodo*)p->Nodo2)->Numero;  //NUMBER
-                        if (p->Subnodos == 3)
-                            k = (int)((elnodo*)p->Nodo3)->Numero;
+                        j = (int)( p.Nodo2).Numero;  //NUMBER
+                        if (p.Subnodos == 3)
+                            k = (int)( p.Nodo3).Numero;
                         vector = (j * k); // cantidad
 
                         arrayVectoresAlfaValores[idx_vec2] = new string [vector];
 
                         //for (i = 0; i < (j * k); i++) vector[i] = 0;
                         arrayVectoresAlfa[idx_vec2] = vector;
-                        //var[(int) p->nodo1->num] = idx_vec;
-                        array_variables[(int)((elnodo*)p->Nodo1)->Numero].numero = (double)idx_vec2;
-                        array_variables[(int)((elnodo*)p->Nodo1)->Numero].dim1 = (int)j;
-                        array_variables[(int)((elnodo*)p->Nodo1)->Numero].dim2 = (int)k;
+                        //var[(int) p.nodo1.num] = idx_vec;
+                        array_variables[(int)( p.Nodo1).Numero].numero = (double)idx_vec2;
+                        array_variables[(int)( p.Nodo1).Numero].dim1 = (int)j;
+                        array_variables[(int)( p.Nodo1).Numero].dim2 = (int)k;
 
                         idx_vec2++;
 
@@ -594,27 +574,27 @@ enum tipos_nodo
                     try
                     {
                         // designator '[' expression ']' EQ expression { $$ = nodo3(asigna_vector, $1, $3, $6 );  }            
-                        int vector;
+                        //int vector;
                         int i, j;
                         int k = 1;
                         double valor;
                         int posicion, posicion2, posicion3;
-                        i = (int)((elnodo*)p->Nodo1)->Numero;    // el indice de la variable (designator)
+                        i = (int)( p.Nodo1).Numero;    // el indice de la variable (designator)
                         j = (int)array_variables[i].numero;
 
                         //vector = arrayVectores[j];   // hasta 32 vectores
-                        if (p->Subnodos == 3)
+                        if (p.Subnodos == 3)
                         {
-                            valor = (double)evalua((elnodo*)p->Nodo3);
-                            posicion = (int)evalua((elnodo*)p->Nodo2);
+                            valor = (double)evalua( p.Nodo3);
+                            posicion = (int)evalua( p.Nodo2);
                             arrayVectoresValores[j][posicion] = valor;   //expresion y expresion
                         }
                         else
                         {
                             k = (int)array_variables[i].dim2;
-                            valor = (double)evalua((elnodo*)p->Nodo4);
-                            posicion = (int)evalua((elnodo*)p->Nodo2);
-                            posicion2 = (int)evalua((elnodo*)p->Nodo3);
+                            valor = (double)evalua( p.Nodo4);
+                            posicion = (int)evalua( p.Nodo2);
+                            posicion2 = (int)evalua( p.Nodo3);
                             posicion3 = (posicion * k) + posicion2;
                             // printf ("pos: %d  ", posicion);
                             arrayVectoresValores[j][posicion3] = valor;   //expresion y expresion
@@ -632,10 +612,10 @@ enum tipos_nodo
                     {
  
                         string snumero;
-                        int n = (int)((elnodo*)p->Nodo1)->Numero;
-                        int n2 = (int)((elnodo*)p->Nodo2)->Numero;
+                        int n = (int)( p.Nodo1).Numero;
+                        int n2 = (int)( p.Nodo2).Numero;
                         snumero =  array_variables[n].valstring;
-                        //constantes[(int) var[ ] ]); //constantes [(int)p->nodo1->num]
+                        //constantes[(int) var[ ] ]); //constantes [(int)p.nodo1.num]
                         Console.WriteLine( DateTime.Now.ToString() +  " Conversion1: " + snumero);
                         array_variables[n2].numero = Convert.ToDouble(snumero);
                         
@@ -647,10 +627,10 @@ enum tipos_nodo
                     {
  
                         double snumero;
-                        int n = (int)((elnodo*)p->Nodo1)->Numero;
-                        int n2 = (int)((elnodo*)p->Nodo2)->Numero;
+                        int n = (int)( p.Nodo1).Numero;
+                        int n2 = (int)( p.Nodo2).Numero;
                         snumero = array_variables[n].numero;
-                        //constantes[(int) var[ ] ]); //constantes [(int)p->nodo1->num]
+                        //constantes[(int) var[ ] ]); //constantes [(int)p.nodo1.num]
                         array_variables[n2].valstring = snumero.ToString();
                         Console.WriteLine("Conversion2: " + snumero.ToString());
  
@@ -666,36 +646,36 @@ enum tipos_nodo
                         //char tipo;
                         
 
-                        indice_de_la_variable = (int) ((elnodo *) p->Nodo1)->Numero;
+                        indice_de_la_variable = (int) (  p.Nodo1).Numero;
                         if (array_variables[indice_de_la_variable].nombre == "subcadena")
                         {
-                            elnodo* g; elnodo* h; elnodo* hh; elnodo * k;
+                            nodo g; nodo h; nodo hh; nodo k;
 
-                            h = (elnodo*)p->Nodo2;
+                            h =  p.Nodo2;
                             hh = h;
-                            g =  (elnodo *) h->Nodo2;
+                            g =    h.Nodo2;
                             k = g;
-                            h = (elnodo*)g->Nodo2;
+                            h =  g.Nodo2;
                             g = h;
                             if (g != null)
                             {
-                                elnodo* b = ((elnodo*)hh->Nodo1);
-                                int origen = (int)b->Numero;
-                                double posicion = evalua((elnodo *)k->Nodo1);
-                                double cantidad = evalua((elnodo*)g->Nodo1);
+                                nodo b = ( hh.Nodo1);
+                                int origen = (int)b.Numero;
+                                double posicion = evalua( k.Nodo1);
+                                double cantidad = evalua( g.Nodo1);
 
-                                int destino = (int)((elnodo*)p->Nodo3)->Numero;
+                                int destino = (int)( p.Nodo3).Numero;
                                 string sorigen = array_variables[origen].valstring ;
                                 array_variables[destino].valstring = sorigen.Substring(((int)posicion)-1, (int) cantidad);
  
                             }
                             else
                             {    // no se indica cantidad, cogemos todo el largo de la variable origen
-                                elnodo* b = ((elnodo*)hh->Nodo1);
-                                int origen = (int)b->Numero;
-                                double posicion = evalua((elnodo*)k->Nodo1);
+                                nodo b = ( hh.Nodo1);
+                                int origen = (int)b.Numero;
+                                double posicion = evalua( k.Nodo1);
  
-                                int destino = (int)((elnodo*)p->Nodo3)->Numero;
+                                int destino = (int)( p.Nodo3).Numero;
                                 string sorigen = array_variables[origen].valstring;
                                 double cantidad = sorigen.Length - posicion + 1  ;
                                 // falta comprobar cantidad
@@ -719,7 +699,7 @@ enum tipos_nodo
 
 
                 default:
-                    Console.WriteLine(p->Tipo);
+                    Console.WriteLine(p.Tipo);
 
                     break;
  
@@ -729,10 +709,10 @@ enum tipos_nodo
          
 
 
-        unsafe double evalua(elnodo* p)
+        unsafe double evalua( nodo p)
         {
 
-            switch ((tipos_nodo)p->Tipo)
+            switch ((tipos_nodo)p.Tipo)
             {
 
                 case tipos_nodo.indice_strings:    //una variable numerica,
@@ -740,7 +720,7 @@ enum tipos_nodo
                     { 
                         try
                         {
-                            int n = (int)   ((elnodo*)p)->Numero;
+                            int n = (int)   ( p).Numero;
                             return array_variables[n].numero;
                         }
                         catch (Exception ee)
@@ -753,53 +733,53 @@ enum tipos_nodo
 
                 case tipos_nodo.un_numero:
                     
-                    return p->Numero;     //un numero constante
+                    return p.Numero;     //un numero constante
 
                 case tipos_nodo.resta:
 
-                    return evalua((elnodo*)p->Nodo1) - evalua((elnodo*)p->Nodo2);
+                    return evalua( p.Nodo1) - evalua( p.Nodo2);
 
                 case tipos_nodo.suma:
-                    return evalua((elnodo*)p->Nodo1) + evalua((elnodo*)p->Nodo2);
+                    return evalua( p.Nodo1) + evalua( p.Nodo2);
 
                 case tipos_nodo.multiplica:
-                    return evalua((elnodo*)p->Nodo1) * evalua((elnodo*)p->Nodo2);
+                    return evalua( p.Nodo1) * evalua( p.Nodo2);
 
                 case tipos_nodo.divide:
-                    if (evalua((elnodo*)p->Nodo2) == 0)
+                    if (evalua( p.Nodo2) == 0)
                     {
                         return 0;
 
                     }
 
-                    return evalua((elnodo*)p->Nodo1) / evalua((elnodo*)p->Nodo2);
+                    return evalua( p.Nodo1) / evalua( p.Nodo2);
 
                 case tipos_nodo.mayorque:
-                    if (evalua((elnodo*)p->Nodo1) > evalua((elnodo*)p->Nodo2)) return 1; else return 0;
+                    if (evalua( p.Nodo1) > evalua( p.Nodo2)) return 1; else return 0;
 
                 case tipos_nodo.mayorigualque:
-                    if (evalua((elnodo*)p->Nodo1) >= evalua((elnodo*)p->Nodo2)) return 1; else return 0;
+                    if (evalua( p.Nodo1) >= evalua( p.Nodo2)) return 1; else return 0;
 
                 case tipos_nodo.noigualque:
-                    if (evalua((elnodo*)p->Nodo1) != evalua((elnodo*)p->Nodo2)) return 1; else return 0;
+                    if (evalua( p.Nodo1) != evalua( p.Nodo2)) return 1; else return 0;
 
                 case tipos_nodo.menorque:
-                    if (evalua((elnodo*)p->Nodo1) < evalua((elnodo*)p->Nodo2)) return 1; else return 0;
+                    if (evalua( p.Nodo1) < evalua( p.Nodo2)) return 1; else return 0;
 
                 case tipos_nodo.igualque:
-                    if (evalua((elnodo*)p->Nodo1) == evalua((elnodo*)p->Nodo2)) return 1; else return 0;
+                    if (evalua( p.Nodo1) == evalua( p.Nodo2)) return 1; else return 0;
 
                 case tipos_nodo.menorigualque:
-                    if (evalua((elnodo*)p->Nodo1) <= evalua((elnodo*)p->Nodo2)) return 1; else return 0;
+                    if (evalua( p.Nodo1) <= evalua( p.Nodo2)) return 1; else return 0;
 
                 case tipos_nodo.negativo:
-                    return evalua((elnodo*)p->Nodo1) * (-1);
+                    return evalua( p.Nodo1) * (-1);
 
                 case tipos_nodo.comparaliteral:
 
                     {
 
-                        if (constantes[(int) array_variables[(int)((elnodo*)p->Nodo1)->Numero].numero] == constantes[(int)((elnodo*)p->Nodo2)->Numero]) return 1; else return 0;
+                        if (constantes[(int) array_variables[(int)( p.Nodo1).Numero].numero] == constantes[(int)( p.Nodo2).Numero]) return 1; else return 0;
 
                     }
 
@@ -809,14 +789,14 @@ enum tipos_nodo
                         int vector;
                         int i, k, n, m;
                         double j;
-                        i = (int)((elnodo*)p->Nodo1)->Numero;
+                        i = (int)( p.Nodo1).Numero;
                         vector = (int)array_variables[i].numero;
-                        if (p->Subnodos == 2)
-                            j = arrayVectoresValores[vector][(int)evalua((elnodo*)p->Nodo2)];    //  vector[];
+                        if (p.Subnodos == 2)
+                            j = arrayVectoresValores[vector][(int)evalua( p.Nodo2)];    //  vector[];
                         else
                         {
-                            m = (int)evalua((elnodo*)p->Nodo2); //indice1
-                            k = (int)evalua((elnodo*)p->Nodo3); //indice2
+                            m = (int)evalua( p.Nodo2); //indice1
+                            k = (int)evalua( p.Nodo3); //indice2
                             n = (int)array_variables[i].dim2; //dimension1
                             j = arrayVectoresValores[vector][m*n+k];        // vector[m * n + k];
                         }
@@ -826,20 +806,20 @@ enum tipos_nodo
 
 
                 case tipos_nodo.llamar:
-                    // p->tipo = llamar
-                    // p->nodo1->num = designator de la funcion a llamar
-                    // p->nodo2  = argumentos para llamar a la funcion
+                    // p.tipo = llamar
+                    // p.nodo1.num = designator de la funcion a llamar
+                    // p.nodo2  = argumentos para llamar a la funcion
                     {
                         //int procedimiento;
                         int indice_de_la_variable;
                         //char tipo;
-                        indice_de_la_variable = (int)((elnodo*)p->Nodo1)->Numero;
+                        indice_de_la_variable = (int)( p.Nodo1).Numero;
                         string str;
 
                         //if (!strcmp(array_variables[indice_de_la_variable].nombre, "instr"))
                         //{
                         //    short i;
-                        //    i = instr((int)p->nodo2->nodo1->num, p->nodo2->nodo2->nodo1->num);
+                        //    i = instr((int)p.nodo2.nodo1.num, p.nodo2.nodo2.nodo1.num);
                         //    res = (double)i;
                         //    return res;
                         //}
@@ -847,7 +827,7 @@ enum tipos_nodo
                         //if (!strcmp(array_variables[indice_de_la_variable].nombre, "largo"))
                         //{
                         //    short i;
-                        //    i = (int)p->nodo2->nodo1->num;
+                        //    i = (int)p.nodo2.nodo1.num;
                         //    i = strlen(array_variables[i].string);
                         //    res = (double)i;
                         //    return res;
@@ -858,8 +838,8 @@ enum tipos_nodo
                         //{
                         //    double i, j;
                         //    //double  k, m;
-                        //    i = evalua(p->nodo2->nodo1);
-                        //    j = evalua(p->nodo2->nodo2->nodo1);
+                        //    i = evalua(p.nodo2.nodo1);
+                        //    j = evalua(p.nodo2.nodo2.nodo1);
                         //    // k = array_variables[i].numero;
                         //    // m = array_variables[j].numero;
                         //    res = (double)pow(i, j);
@@ -871,7 +851,7 @@ enum tipos_nodo
                         //{
                         //    double i;
                         //    //double  k, m;
-                        //    i = evalua(p->nodo2->nodo1);
+                        //    i = evalua(p.nodo2.nodo1);
 
                         //    // k = array_variables[i].numero;
                         //    // m = array_variables[j].numero;
@@ -897,7 +877,7 @@ enum tipos_nodo
                         {
                             double i, res;
                             //double  k, m;
-                            i = evalua( (elnodo*) ((elnodo*) p->Nodo2)->Nodo1);
+                            i = evalua(   (  p.Nodo2).Nodo1);
 
                             // k = array_variables[i].numero;
                             // m = array_variables[j].numero;
@@ -905,9 +885,7 @@ enum tipos_nodo
                             //res =  (double) i;
                             return res;
                         }
-
-
-
+ 
 
                         //tipo = array_variables[indice_de_la_variable].tipo; //evalua
 
@@ -915,7 +893,7 @@ enum tipos_nodo
                         //procedimiento = array_variables[indice_de_la_variable].procedimiento;
                         //if ((tipo != 'P') && (tipo != 'F'))
                         //{
-                        //    printf("Bprocedimiento no encontrado en linea: %d \n", p->nrolinea2);
+                        //    printf("Bprocedimiento no encontrado en linea: %d \n", p.nrolinea2);
                         //    getchar();
                         //    exit(1);
                         //}
@@ -946,18 +924,18 @@ enum tipos_nodo
 
                         //        ast far *g;
                         //        ast far *f = procedimientos[procedimiento];  // los argumentos
-                        //                                                     //i = f->nodo1->num;   //designator de la funcion que se llama
+                        //                                                     //i = f.nodo1.num;   //designator de la funcion que se llama
 
-                        //        g = p->nodo2;
+                        //        g = p.nodo2;
 
                         //        // en f tenemos una funcion
-                        //        // en f->nodo1 el designator de la funcion
-                        //        // en f->nodo2 los argumentos
-                        //        // en f->nodo3 el cuerpo de la funcion
+                        //        // en f.nodo1 el designator de la funcion
+                        //        // en f.nodo2 los argumentos
+                        //        // en f.nodo3 el cuerpo de la funcion
 
                         //        //push parametros
                         //        push_param(255);
-                        //        i = push_argumentos(f->nodo2, g, &nargs);
+                        //        i = push_argumentos(f.nodo2, g, &nargs);
                         //        push_param(indice_de_la_variable);
                         //        execut(f);
                         //        pop_param(indice_de_la_variable);
@@ -973,14 +951,9 @@ enum tipos_nodo
                         //}
                     }
                     break;
-
-
-
-
-
-
+ 
                 default:
-                    Console.WriteLine(p->Tipo);
+                    Console.WriteLine(p.Tipo);
  
                         break;
 
@@ -1030,6 +1003,72 @@ enum tipos_nodo
  
         }
 
+        unsafe public nodo convertir3(elnodo* p)
+        {
+            nodo res = new nodo
+            {
+                Numero = p->Numero,
+                Tipo = (tipos_nodo)p->Tipo,
+                Subnodos = p->Subnodos
+            };
+
+            switch (p->Subnodos)
+            {
+                case 1:
+                    res.Nodo1 = convertir3((elnodo*)p->Nodo1);
+                    break;
+
+                case 2:
+                    res.Nodo1 = convertir3((elnodo*)p->Nodo1);
+                    res.Nodo2 = convertir3((elnodo*)p->Nodo2);
+                    break;
+
+                case 3:
+                    res.Nodo1 = convertir3((elnodo*)p->Nodo1);
+                    res.Nodo2 = convertir3((elnodo*)p->Nodo2);
+                    res.Nodo3 = convertir3((elnodo*)p->Nodo3);
+                    break;
+
+                case 4:
+                    res.Nodo1 = convertir3((elnodo*)p->Nodo1);
+                    res.Nodo2 = convertir3((elnodo*)p->Nodo2);
+                    res.Nodo3 = convertir3((elnodo*)p->Nodo3);
+                    res.Nodo4 = convertir3((elnodo*)p->Nodo4);
+                    break;
+
+                case 5:
+                    res.Nodo1 = convertir3((elnodo*)p->Nodo1);
+                    res.Nodo2 = convertir3((elnodo*)p->Nodo2);
+                    res.Nodo3 = convertir3((elnodo*)p->Nodo3);
+                    res.Nodo4 = convertir3((elnodo*)p->Nodo4);
+                    res.Nodo5 = convertir3((elnodo*)p->Nodo5);
+                    break;
+
+            }
+            return res;
+
+        }
+ 
+
+    }
+ 
+    public class nodo
+    {
+
+        public tipos_nodo Tipo;
+        public double Numero;
+        public int Subnodos;
+
+        public nodo Nodo1;
+
+        public nodo Nodo2;
+
+        public nodo Nodo3;
+
+        public nodo Nodo4;
+
+        public nodo Nodo5;
+
     }
  
 }
@@ -1048,6 +1087,6 @@ enum tipos_nodo
 
 //    }
 //}
-
+ 
 
 

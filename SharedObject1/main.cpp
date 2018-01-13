@@ -57,7 +57,7 @@ extern   char constantes[127][127];
 extern double var[127];
 
 extern   ast * pila_programas[32];
-
+extern ast * procedimientos[127];
  
 
 extern int nodos;
@@ -95,6 +95,7 @@ namespace CppWINRT  // test
 		     double  run(); //retorna la primer variable, antes el parametro era String *s
 			 double  buscar_valor(string *nombre);
 			 UnmanagedStruct*    getmainprogram();
+			 UnmanagedStruct*    getprocedimiento(int);
 			 char   * getconstante(int posicion);
 			 double getvar (int posicion);
 			 UnmanagedStruct * convertir2(ast * p);
@@ -105,7 +106,7 @@ namespace CppWINRT  // test
  	
 	};
    
- 
+
 
 char * clase1::getconstante(int posicion) {
 	return  constantes[posicion];
@@ -221,6 +222,17 @@ UnmanagedStruct* clase1::getmainprogram() {
 		return temp;
 	
 	}
+UnmanagedStruct* clase1::getprocedimiento(int n) {
+	UnmanagedStruct *  temp;
+ 
+	temp = convertir2(procedimientos[n]);
+ 
+	 
+	return temp;
+
+}
+
+
 
 clase1::clase1()
 {
@@ -554,13 +566,25 @@ extern "C" double Cpp_GetValue2(int i)
  
 #include "vars.h";
 
-extern "C" char * Cpp_GetValue3(int i)
-{
-	try {
-		char * temp;
 
-		//temp = &constantes[i][0];
-		temp = array_variables[i].nombre;
+struct variableTemp {
+public:
+	 
+	  char * nombre;
+	  char tipo;
+	  int procedimiento;
+};
+
+
+// enviar las variables
+extern "C" variableTemp * Cpp_GetValue3(int i)
+{
+	variableTemp * temp = new variableTemp();
+	try {
+ 
+		temp->nombre = array_variables[i].nombre;
+		temp->tipo = array_variables[i].tipo;
+		temp->procedimiento = array_variables[i].procedimiento;
 
 		return temp;
 	}
@@ -574,11 +598,30 @@ extern "C" char * Cpp_GetValue3(int i)
 
 }
 
+
+extern "C" int   Cpp_GetValue4( )
+{
+	try {
+ 
+		return idx_prc;
+	}
+
+	catch (exception& e)
+	{
+
+		fprintf(stderr, e.what());
+
+	}
+
+}
+
+CppWINRT::clase1 * ppp;
+ 
  
 extern "C" UnmanagedStruct  *   PassByReferenceInOut(struct  UnmanagedStruct ** sss) {
 	struct UnmanagedStruct *temp1;
 
-	CppWINRT::clase1 *  ppp = new CppWINRT::clase1();
+	  ppp = new CppWINRT::clase1();
 	fprintf(stderr, "\n\nejecucion programa  \n\n");
 	int v = ppp->run();
 	 //temp1 =   *sss;
@@ -594,11 +637,39 @@ extern "C" UnmanagedStruct  *   PassByReferenceInOut(struct  UnmanagedStruct ** 
 	   (*sss)->Nodo2 = temp1->Nodo2;
 	   (*sss)->Nodo3 = temp1->Nodo3;
 	   (*sss)->Nodo4 = temp1->Nodo4;
-
+	  
 	   temp1 = NULL;
 	   return    *sss;
 
 //	delete ppp;
+}
+
+
+
+extern "C" UnmanagedStruct  *   PassByReferenceInOut2(int n) {
+	struct UnmanagedStruct *temp1;
+
+	//CppWINRT::clase1 *  ppp = new CppWINRT::clase1();
+	//fprintf(stderr, "\n\nejecucion programa  \n\n");
+	//int v = ppp->run();
+	//temp1 =   *sss;
+	
+ 
+	temp1 = ppp->getprocedimiento(n);
+
+	//*sss =   temp1;
+	//(*ttt)->Tipo = temp1->Tipo;
+	//(*ttt)->Numero = temp1->Numero;
+	//(*ttt)->Nodo1 = temp1->Nodo1;
+	//(*ttt)->Subnodos = temp1->Subnodos;
+	//(*ttt)->Nodo2 = temp1->Nodo2;
+	//(*ttt)->Nodo3 = temp1->Nodo3;
+	//(*ttt)->Nodo4 = temp1->Nodo4;
+
+	//temp1 = NULL;
+	return    temp1;
+
+	//	delete ppp;
 }
 
 

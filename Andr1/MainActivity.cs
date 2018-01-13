@@ -61,6 +61,9 @@ namespace Andr1
         [DllImport("SharedObject1")]
         public extern static Double Cpp_GetValue2(int i);
 
+        [DllImport("SharedObject1")]
+        public extern static int Cpp_GetValue4();
+
 
         [StructLayout(LayoutKind.Sequential , Pack = 1)    ]
         public struct STRINGXX
@@ -68,6 +71,14 @@ namespace Andr1
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
            public  string varstr;
         }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public unsafe struct variableTemp
+        {
+            public IntPtr nombre;
+            public char tipo;
+            public int procedimiento;
+        };
 
 
         [StructLayout(LayoutKind.Sequential)]
@@ -105,6 +116,9 @@ namespace Andr1
             [DllImport("SharedObject1")]
             public static extern IntPtr PassByReferenceInOut(ref IntPtr s);
 
+            [DllImport("SharedObject1")]
+            public static extern IntPtr PassByReferenceInOut2(  int s);
+
             ///* cannot wrap function ReturnByValue */
 
             /* ReturnByReference */
@@ -137,7 +151,10 @@ namespace Andr1
 
         private double[][] arrayVectoresValores  = new double[32][];
         private string[][] arrayVectoresAlfaValores = new string[32][];
- 
+
+
+        public nodo[] procedimientos = new nodo[127]   ;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -190,11 +207,20 @@ namespace Andr1
                 pList = elnodo.PassByReferenceInOut(ref pListHead);
 
                 s = (elnodo)Marshal.PtrToStructure(pList, typeof(elnodo));
+ 
+                programa = convertir3( &s );
 
-                elnodo* s2;
-                s2 = &s;
+                //traemos los procedimientos
+                int n = Cpp_GetValue4();
 
-                programa = convertir3( s2);
+                for (i=0; i<n; i++)
+                {
+                    //pListHead = Marshal.AllocHGlobal(Marshal.SizeOf(s));
+                    pList =   elnodo.PassByReferenceInOut2(  i ) ;
+                    s = (elnodo)Marshal.PtrToStructure(pList, typeof(elnodo));
+                    procedimientos[i] = convertir3(&s);
+
+                }
  
                 //traemos las variables numericas
                 for (i = 0; i < 127; i++)
@@ -230,25 +256,28 @@ namespace Andr1
                 //traemos los nombres de  las variables
                 for (i = 0; i < 127; i++)
                 {
+                    variableTemp temp = new variableTemp();
                     byte[] arr = new byte[255];
 
                     pList = IntPtr.Zero;
 
-                    pList = Cpp_GetValue3(i);
+ 
+                    pList = Cpp_GetValue3(i) ;
 
-                    Marshal.Copy(pList, arr, 0, arr.Length);
+                    temp = (variableTemp)Marshal.PtrToStructure(pList, typeof(variableTemp));
+ 
+                    Marshal.Copy(temp.nombre, arr, 0, arr.Length);
 
                     System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
 
                     array_variables[i].nombre = encoding.GetString(arr);
+                    array_variables[i].tipo = temp.tipo;
+                    array_variables[i].procedimiento = temp.procedimiento;
 
                     int index = array_variables[i].nombre.IndexOf('\0');
                     if (index >= 0)
                         array_variables[i].nombre = array_variables[i].nombre.Remove(index);
                 }
-
-
-
 
             }
 
@@ -643,6 +672,7 @@ namespace Andr1
                     {
                         //int procedimiento;
                         int indice_de_la_variable;
+                        string nombrefuncion;
                         //char tipo;
                         
 
@@ -667,7 +697,7 @@ namespace Andr1
                                 int destino = (int)( p.Nodo3).Numero;
                                 string sorigen = array_variables[origen].valstring ;
                                 array_variables[destino].valstring = sorigen.Substring(((int)posicion)-1, (int) cantidad);
- 
+                                break;
                             }
                             else
                             {    // no se indica cantidad, cogemos todo el largo de la variable origen
@@ -680,9 +710,106 @@ namespace Andr1
                                 double cantidad = sorigen.Length - posicion + 1  ;
                                 // falta comprobar cantidad
                                 array_variables[destino].valstring = sorigen.Substring(((int)posicion)-1, (int)cantidad);
- 
+                                break;
                             }
                         }
+
+
+                        //llamar a un procedimiento o funcion
+                        char tipo = array_variables[indice_de_la_variable].tipo;
+                        int procedimiento = array_variables[indice_de_la_variable].procedimiento;
+                        if ((tipo != 'P') && (tipo != 'F'))
+                        {
+                            sw.WriteLine("Aprocedimiento no encontrado en linea: %d \n");  //, p->nrolinea2);
+                            sw.WriteLine(array_variables[indice_de_la_variable].nombre);
+
+                            //getchar();
+                            //exit(1);
+                            break;
+                        }
+                        else
+                        {
+                            //escribir el nombre del proc o funcio en un buffer
+
+                            //array_variables[indice_de_la_variable].nombre
+
+                            //execut      funcion
+                            //nombrefuncion = array_variables[255].nombre;
+                            //push_param(255);
+
+                            nombrefuncion = array_variables[indice_de_la_variable].nombre;
+
+
+                            array_variables[255].nombre =  nombrefuncion;
+
+
+                            if (tipo == 'P')
+                            {
+                                //push_param(255);
+                                execut(procedimientos[procedimiento]);
+                                //pop_param(255);
+                                //strcpy(nombrefuncion, array_variables[255].nombre);
+                            }
+                            else
+                            {
+                                //short i;
+                                //short cantidad = 0;
+
+                                //ast far *g;
+                                //ast far *f = procedimientos[procedimiento];  // los argumentos
+                                //i = f->nodo1->num;   //designator de la funcion que se llama
+
+                                //g = p->nodo2;
+
+                                //// en f tenemos una funcion
+                                //// en f->nodo1 el designator de la funcion
+                                //// en f->nodo2 los argumentos
+                                //// en f->nodo3 el cuerpo de la funcion
+
+                                ////push parametros
+                                //push_param(255);
+                                //i = push_argumentos(f->nodo2, g, &cantidad);
+                                //push_param(indice_de_la_variable);
+                                //execut(f);
+                                //pop_param(indice_de_la_variable);
+                                //pop_argumentos(cantidad);
+                                //pop_param(255);
+                                //strcpy(nombrefuncion, array_variables[255].nombre);
+                                //g = p->nodo3;
+                                //if (g != NULL)
+                                //{
+                                //    i = (int)p->nodo3->num;
+                                //    if (array_variables[i].tipo = 'S')
+                                //    {
+                                //        array_variables[i].string = array_variables[indice_de_la_variable].string;
+                                //    }
+                                //    else
+                                //    {
+                                //        array_variables[i].numero = array_variables[indice_de_la_variable].numero;
+                                //    }
+                                //    /*
+                                //                                push_param(indice_de_la_variable);
+                                //                                pop_param(i);
+                                //    */
+                                //}
+
+
+                                ////pop parametros
+                            }
+                            //pop_param(255);
+                            //strcpy(nombrefuncion, array_variables[255].nombre);
+
+                        }
+ 
+                    }
+                    break;
+
+
+
+
+                case tipos_nodo.procedimiento:
+                    {
+                        execut(p.Nodo2);
                     }
                     break;
 
@@ -1070,7 +1197,10 @@ namespace Andr1
         public nodo Nodo5;
 
     }
- 
+
+
+
+
 }
 
 //public class TestEvent

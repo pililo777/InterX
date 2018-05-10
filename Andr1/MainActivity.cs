@@ -42,8 +42,9 @@ namespace Andr1
 	asigna_vector_alfa2, asigna_vector_alfa3, funcion, lista_argumentos, lista_parametros,
 	asigna_vector_alfa4, vector_alfanum, comparaliteral2, consulta
 }
+    // 
+    [Activity(Label = "Andr1", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.NoTitleBar")  ]
 
-    [Activity(Label = "Andr1", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
         System.Timers.Timer mtimer = new System.Timers.Timer();
@@ -295,8 +296,6 @@ namespace Andr1
                 sw = new StringWriter();
                 string text2 = execut(programa);
 
-                //edit1.Text = System.IO.File.ReadAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt");
-                //edit1.Text = System.IO.File.ReadAllText("/data/data/Andr1.Andr1/files/test.txt");
                 EditText edit1 = FindViewById<EditText>(Resource.Id.editText1);
                 System.IO.File.WriteAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt", text2);
                 edit1.Text = text2;
@@ -354,7 +353,7 @@ namespace Andr1
             {
 
                 case tipos_nodo.stop:
-                    //System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
+
                     Console.WriteLine(sw.ToString());
 
                     //EditText edit1 = FindViewById<EditText>(Resource.Id.editText1);
@@ -377,7 +376,6 @@ namespace Andr1
                 case tipos_nodo.imprimir_literal:
 
                     sw.Write (constantes[(int)(p.Nodo1).Numero]);
-                    //System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
 
                     //  edit1 = FindViewById<EditText>(Resource.Id.editText1);
 
@@ -389,7 +387,7 @@ namespace Andr1
                     {
                         int n = (int)((p.Nodo1)).Numero;
                         sw.Write (array_variables[n].valstring);
-                        //System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
+                        
 
                         //  edit1 = FindViewById<EditText>(Resource.Id.editText1);
 
@@ -406,7 +404,7 @@ namespace Andr1
 
                         case 0:
                             sw.Write (evalua(p.Nodo1));
-                            //System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
+                            
 
                             //EditText edit2 = FindViewById<EditText>(Resource.Id.editText1);
 
@@ -416,7 +414,7 @@ namespace Andr1
 
                         default:
                             sw.Write (evalua(p.Nodo1));
-                            //System.IO.File.WriteAllText("/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
+                            
 
                             //EditText edit3 = FindViewById<EditText>(Resource.Id.editText1);
 

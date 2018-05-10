@@ -8,11 +8,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button1" />
-    <EditText
-        android:inputType="textMultiLine"
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
         android:layout_width="match_parent"
-        android:layout_height="481.0dp"
-        android:id="@+id/editText1"
-        android:layout_marginBottom="48.0dp"
-        android:editable="false" />
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout1">
+        <ScrollView
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="309.0dp"
+            android:layout_height="482.0dp"
+            android:id="@+id/scrollView1"
+            android:layout_marginLeft="24.0dp"
+            android:layout_marginRight="24.0dp">
+            <EditText
+                android:inputType="textMultiLine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/editText1"
+                android:editable="false"
+                android:enabled="false"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:textColor="@android:color/black" />
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>

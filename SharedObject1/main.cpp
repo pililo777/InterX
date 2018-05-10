@@ -263,7 +263,7 @@ int clase1::main ()
 		
 		do {
 		 
-			fprintf(stderr, "VAMOS POR EL P1.PR");
+			fprintf(stderr, "VAMOS POR EL P1.PR\n");
 		    yyin = fopen(myFileName, "r");    //comentar para depurar
 
 			if (yyin == NULL) {
@@ -350,7 +350,7 @@ double clase1::run()   // antes el parametro era una string   String *s
 			{
 			    int argc = 2;
 				char test[80];
-
+				                                               
 				 
 //			static const	char *  myFileName  = "/sdcard/data/data/Andr1.Andr1/files/test.txt";
 			static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/test.txt";

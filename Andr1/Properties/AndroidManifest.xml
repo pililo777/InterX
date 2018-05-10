@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="Andr1.Andr1" android:versionName="1.1" android:installLocation="auto" android:versionCode="2">
-	<uses-sdk />
+	<uses-sdk android:minSdkVersion="24" android:targetSdkVersion="24" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="Andr1"></application>
+	<application android:label="Andr1" android:icon="@drawable/Icon"></application>
 	<intent-filter>
 		<action android:name="android.intent.action.VIEW" />
 		<action android:name="android.intent.action.EDIT" />

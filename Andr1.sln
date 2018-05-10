@@ -19,6 +19,11 @@ Global
 		Release|ARM64 = Release|ARM64
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		samsung|Any CPU = samsung|Any CPU
+		samsung|ARM = samsung|ARM
+		samsung|ARM64 = samsung|ARM64
+		samsung|x64 = samsung|x64
+		samsung|x86 = samsung|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{655EB647-8210-4403-853F-CD3A775A10C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -51,8 +56,23 @@ Global
 		{655EB647-8210-4403-853F-CD3A775A10C5}.Release|x86.ActiveCfg = Release|Any CPU
 		{655EB647-8210-4403-853F-CD3A775A10C5}.Release|x86.Build.0 = Release|Any CPU
 		{655EB647-8210-4403-853F-CD3A775A10C5}.Release|x86.Deploy.0 = Release|Any CPU
-		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Debug|Any CPU.ActiveCfg = Debug|ARM64
-		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Debug|Any CPU.Build.0 = Debug|ARM64
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|Any CPU.ActiveCfg = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|Any CPU.Build.0 = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|Any CPU.Deploy.0 = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|ARM.ActiveCfg = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|ARM.Build.0 = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|ARM.Deploy.0 = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|ARM64.ActiveCfg = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|ARM64.Build.0 = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|ARM64.Deploy.0 = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|x64.ActiveCfg = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|x64.Build.0 = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|x64.Deploy.0 = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|x86.ActiveCfg = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|x86.Build.0 = samsung|Any CPU
+		{655EB647-8210-4403-853F-CD3A775A10C5}.samsung|x86.Deploy.0 = samsung|Any CPU
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Debug|Any CPU.Build.0 = Debug|x86
 		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Debug|ARM.ActiveCfg = Debug|ARM
 		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Debug|ARM.Build.0 = Debug|ARM
 		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Debug|ARM64.ActiveCfg = Debug|ARM64
@@ -71,6 +91,16 @@ Global
 		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Release|x64.Build.0 = Release|x64
 		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Release|x86.ActiveCfg = Release|x86
 		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.Release|x86.Build.0 = Release|x86
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|Any CPU.ActiveCfg = samsung|ARM64
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|Any CPU.Build.0 = samsung|ARM64
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|ARM.ActiveCfg = samsung|ARM
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|ARM.Build.0 = samsung|ARM
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|ARM64.ActiveCfg = samsung|ARM64
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|ARM64.Build.0 = samsung|ARM64
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|x64.ActiveCfg = samsung|x64
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|x64.Build.0 = samsung|x64
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|x86.ActiveCfg = samsung|x86
+		{15EAD870-ECB0-43F1-8129-65B7B166BA0A}.samsung|x86.Build.0 = samsung|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

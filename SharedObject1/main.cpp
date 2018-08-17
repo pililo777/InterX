@@ -233,15 +233,18 @@ clase1::~clase1()
 int clase1::main ()
 {
     int i;
- //static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/p1.pr";
- static const	char *  myFileName = "/data/data/Andr1.Andr1/files/p1.pr";
+ static const	char *  myFileName = "/sdcard/data/user/0/Andr1.Andr1/files/p1.pr";
+ static const	char *  myFileName2 = "/sdcard/data/user/0/Andr1.Andr1/files/temp.txt";
+ //static const	char *  myFileName = "/data/data/Andr1.Andr1/files/p1.pr";
  int    fd;
  
  fd = dup(fileno(stderr));
- freopen("/data/data/Andr1.Andr1/files/temp.txt", "w", stderr);
+ freopen(myFileName2, "w+", stderr);
 
 
- 
+ char str[] = "This is tutorialspoint.com";
+ size_t nn;
+
  
 
 	if   (1) {     //  {     //LO normal es :   (argc > 1)  --  para depurar con un programa: (argc = 1)
@@ -252,6 +255,13 @@ int clase1::main ()
 		 
 			fprintf(stderr, "VAMOS POR EL P1.PR");
 		    yyin = fopen(myFileName, "r");    //comentar para depurar
+
+			if (yyin == NULL) {
+				yyin = fopen("/sdcard/data/user/0/Andr1.Andr1/files/p1.pr", "r");  //\data\user\0\Andr1.Andr1\files
+
+				//nn = fwrite(str, 1, sizeof(str), yyin);
+				//fclose(yyin);
+			}
 
 			if (yyin == NULL) {
 

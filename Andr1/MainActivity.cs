@@ -124,8 +124,15 @@ namespace Andr1
             int i;
             //string  sb = new string(' ', 255);
             //StringBuilder sb = new StringBuilder(256);
+
+            string documentsPath = System.Environment.GetFolderPath(
+System.Environment.SpecialFolder.Personal);
             elnodo s = new elnodo();
-           
+
+            EditText edit1 = FindViewById<EditText>(Resource.Id.editText1);
+
+            //edit1.Text = documentsPath.ToString();
+            
 
             unsafe
             {
@@ -178,7 +185,7 @@ namespace Andr1
 
             StringWriter sw = new StringWriter();
 
-                EditText edit1 = FindViewById<EditText>(Resource.Id.editText1);
+                
                 try
                 {
 

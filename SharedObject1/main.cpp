@@ -247,7 +247,7 @@ int clase1::main ()
 {
     int i;
  //static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/p1.pr";
- static const	char *  myFileName = "/sdcard/data/data/Andr1.Andr1/files/p1.pr";
+ static const	char *  myFileName = "/sdcard/data/user/0/Andr1.Andr1/files/p1.pr";
  int    fd;
  
  fd = dup(fileno(stderr));

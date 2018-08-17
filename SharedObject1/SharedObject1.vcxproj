@@ -146,6 +146,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <PackageDebugSymbols>false</PackageDebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
   </PropertyGroup>
@@ -207,6 +208,7 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>  -Wl,-soname,libSharedObject1.so</AdditionalOptions>
+      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='samsung|ARM64'">

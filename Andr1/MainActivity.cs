@@ -297,7 +297,7 @@ namespace Andr1
                 string text2 = execut(programa);
 
                 EditText edit1 = FindViewById<EditText>(Resource.Id.editText1);
-                System.IO.File.WriteAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt", text2);
+                System.IO.File.WriteAllText("/sdcard/data/user/0/Andr1.Andr1/files/test.txt", text2);
                 edit1.Text = text2;
                 mtimer.Stop();
             }
@@ -432,7 +432,7 @@ namespace Andr1
 
                     execut(p.Nodo1);
                     sw.WriteLine("\n");
-                    System.IO.File.WriteAllText("/sdcard/data/data/Andr1.Andr1/files/test.txt", sw.ToString());
+                    System.IO.File.WriteAllText("/sdcard/data/user/0/Andr1.Andr1/files/test.txt", sw.ToString());
                     break;
 
 
